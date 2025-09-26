@@ -1,5 +1,5 @@
 [project]
-name = "productivity-cli"
+name = "dobrydo"
 version = "0.1.0"
 description = "Productivity suite CLI tool built in Python."
 readme = "README.md"
@@ -7,5 +7,16 @@ requires-python = ">=3.13"
 dependencies = [
     "click>=8.3.0",
     "rich>=14.1.0",
+]
+
+[project.optional-dependencies]
+dev = [
     "ruff>=0.13.2",
 ]
+
+[project.scripts]
+dobrydo = "dobrydo:cli"
+
+[build-system]
+requires = ["flit_core<4"]
+build-backend = "flit_core.buildapi"
