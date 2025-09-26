@@ -14,6 +14,6 @@ create: click.Command
 @click.option("--due", help="Task due date")
 def list(due: str):
     """List all tasks."""
-    click.echo("All tasks.")
+    click.echo(f"All tasks. ({due})")
 
 list: click.Command

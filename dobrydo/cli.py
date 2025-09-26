@@ -1,5 +1,5 @@
 import click
-from . import tasks
+from .tools import tasks, notes, timers
 
 
 @click.group()
@@ -14,5 +14,19 @@ def task() -> None:
 
 task.add_command(tasks.create)
 task.add_command(tasks.list)
-
 cli.add_command(task)
+
+@click.group()
+def note() -> None:
+    """Note commands."""
+    pass
+
+cli.add_command(note)
+
+@click.group()
+def timer() -> None:
+    """Timer commands."""
+    pass
+
+cli.add_command(timer)
+
