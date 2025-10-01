@@ -25,10 +25,21 @@ uv pip install -e .
 
 ## Roadmap
 
-- [ ] Task management with database (add, list, delete)
-- [ ] Task completion/marking as done
-- [ ] Task editing
-- [ ] Note-taking functionality
+- [ ] Task management (add, list, delete)
+- [ ] Task completion and editing
+- [ ] Notes functionality
 - [ ] Pomodoro Timer functionality
 - [ ] Rich text formatting
 - [ ] Export tasks to file
+
+## Usage
+
+To use DobryDo, run the following command:
+
+```bash
+dobrydo
+```
+
+## Note
+
+This project is still in development.
