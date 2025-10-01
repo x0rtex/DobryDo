@@ -1,32 +1,37 @@
 import click
-from .tools import tasks, notes, timers
+from .commands import task_command
 
 
 @click.group()
 def cli() -> None:
-    """Dobrydo CLI entrypoint."""
+    """DobryDo CLI entrypoint."""
     pass
+
 
 @click.group()
 def task() -> None:
     """Task commands."""
     pass
 
-task.add_command(tasks.add)
-task.add_command(tasks.list)
+
+task.add_command(task_command.add)
+task.add_command(task_command.list)
 cli.add_command(task)
+
 
 @click.group()
 def note() -> None:
     """Note commands."""
     pass
 
+
 cli.add_command(note)
+
 
 @click.group()
 def timer() -> None:
     """Timer commands."""
     pass
 
-cli.add_command(timer)
 
+cli.add_command(timer)
