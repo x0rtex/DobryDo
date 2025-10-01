@@ -12,7 +12,12 @@ dependencies = [
 [project.optional-dependencies]
 dev = [
     "ruff>=0.13.2",
+    "ty>=0.0.1a21",
 ]
+
+[tool.ruff]
+line-length = 88
+fix = true
 
 [project.scripts]
 dobrydo = "dobrydo:cli"
