@@ -12,7 +12,7 @@ def task() -> None:
     """Task commands."""
     pass
 
-task.add_command(tasks.create)
+task.add_command(tasks.add)
 task.add_command(tasks.list)
 cli.add_command(task)
 
