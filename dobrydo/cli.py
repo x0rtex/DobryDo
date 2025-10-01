@@ -1,11 +1,12 @@
 import click
 from .commands import task_command
+from .db import init_db
 
 
 @click.group()
 def cli() -> None:
-    """DobryDo CLI entrypoint."""
-    pass
+    """DobryDo CLI Productivity Suite."""
+    init_db()
 
 
 @click.group()
