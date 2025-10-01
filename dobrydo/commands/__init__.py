@@ -1,1 +1,1 @@
-"""Command modules for dobrydo CLI."""
+"""Command modules for DobryDo."""
