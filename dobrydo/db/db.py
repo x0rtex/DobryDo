@@ -18,10 +18,14 @@ def get_db():
 
 def init_db() -> None:
     """Initialize database and create tables if missing."""
+    create_tasks_table()
+
+
+def create_tasks_table() -> None:
+    """Create tasks table if missing."""
     with get_db() as conn:
         cur = conn.cursor()
 
-        # Create tasks table
         _ = cur.execute(
             """
             CREATE TABLE IF NOT EXISTS tasks (
@@ -35,3 +39,13 @@ def init_db() -> None:
             );
         """
         )
+
+
+def create_notes_table() -> None:
+    """Create notes table if missing."""
+    raise NotImplementedError
+
+
+def create_timers_table() -> None:
+    """Create timers table if missing."""
+    raise NotImplementedError
