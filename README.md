@@ -18,7 +18,7 @@ A productivity suite CLI tool built in Python to help you be productive from you
 ### Using uv
 
 ```bash
-git clone https://github.com/x0rtex/dobrydo.git
+git clone https://github.com/x0rtex/DobryDo.git
 cd dobrydo
 uv pip install -e .
 ```
