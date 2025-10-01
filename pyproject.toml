@@ -16,7 +16,6 @@ dev = [
 ]
 
 [tool.ruff]
-line-length = 88
 fix = true
 
 [project.scripts]

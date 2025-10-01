@@ -1,57 +1,101 @@
+from datetime import datetime
+import json
 import click
 import sqlite3
 
 
-@click.command()
-@click.argument("title")
-@click.option("--details", help="Task details")
-@click.option("--due", help="Task due date")
-def add(title: str, details: str, due: str) -> None:
-    """Add a new task with TITLE, DETAILS, and DUE date."""
-    # TODO: Implement add functionality
-    with sqlite3.connect("/db/dobrydo.db") as conn:
-        cur = conn.cursor()
-        cur = cur.execute("""
-            CREATE TABLE IF NOT EXISTS tasks (
+def create_table_if_not_exists(cur: sqlite3.Cursor) -> None:
+    _ = cur.execute(
+        """
+        CREATE TABLE IF NOT EXISTS tasks (
             id INTEGER PRIMARY KEY,
-            title text NOT NULL,
-            details text,
+            title TEXT NOT NULL,
+            details TEXT,
             due_date DATE,
-            is_completed INTEGER NOT NULL DEFAULT 0
-            );
-        """)
-
-        cur = cur.execute("""
-            INSERT INTO tasks (title, details, due_date, is_completed) VALUES
-            ('Complete SQLite tutorial', 1),
-            ('Learn Boolean in SQLite', 0),
-        """)
-
-    click.echo(
-        f"Added task with title '{title}', details '{details}', and date '{due}'"
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            completed_at TIMESTAMP,
+            tags TEXT
+        );
+    """
     )
 
 
-add: click.Command
-
-
-@click.command()
-@click.option("--due", help="Task due date")
-def list(due: str) -> None:
-    """List all tasks."""
-    # TODO: Implement list functionality
-    click.echo(f"All tasks. ({due})")
-
-
-list: click.Command
+def validate_due_date(ctx, param, date_str: str):
+    if not date_str:
+        return None
+    try:
+        return datetime.strptime(date_str, "%d/%m/%Y").date()
+    except ValueError:
+        raise click.BadParameter(
+            f"Due date must be in DD/MM/YYYY format. Got: {date_str}"
+        )
 
 
 @click.command()
 @click.argument("title")
-def delete(title: str) -> None:
-    """Delete a specified task by name."""
-    # TODO: Implement delete functionality
-    click.echo(f"To delete task. ({title})")
+@click.option("--details", "--d", help="Task details")
+@click.option("--duedate", "--due", help="Task due date", callback=validate_due_date)
+@click.option("--tags", "--t", help="Tags related to task", multiple=True)
+def add(title: str, details: str, duedate: str, tags: tuple[str]) -> None:
+    """Add a new task with TITLE, DETAILS, TAGS, and DUE date."""
+    tags_json: str = json.dumps(tags)
+    with sqlite3.connect("dobrydo.db") as conn:
+        cur = conn.cursor()
+        create_table_if_not_exists(cur)
+
+        _ = cur.execute(
+            """
+            INSERT INTO tasks (title, details, due_date, tags)
+            VALUES (?, ?, ?, ?)
+        """,
+            (title, details, duedate, tags_json),
+        )
+
+    click.echo(
+        f"Added task with title '{title}', details '{details}', and due date of '{duedate}' with tags '{tags}'."
+    )
 
 
-delete: click.Command
+@click.command()
+def list() -> None:
+    """List all tasks."""
+    click.echo(f"All tasks.")
+    click.echo(
+        "Task ID | Title | Details | Due Date | Created At | Completed At | Tags"
+    )
+    click.echo("---------------------------------------------------------------")
+    with sqlite3.connect("dobrydo.db") as conn:
+        cur = conn.cursor()
+        create_table_if_not_exists(cur)
+
+        _ = cur.execute(
+            """
+            SELECT id, title, details, due_date, created_at, completed_at, tags
+            FROM tasks
+        """,
+        )
+
+        tasks = cur.fetchall()
+        for task in tasks:
+            click.echo(
+                f"{task[0]} | {task[1]} | {task[2]} | {task[3]} | {task[4]} | {task[5]} | {task[6]}"
+            )
+
+
+@click.command()
+@click.argument("id", type=int)
+def delete(id: int) -> None:
+    """Delete a specified task by ID."""
+    with sqlite3.connect("dobrydo.db") as conn:
+        cur = conn.cursor()
+        create_table_if_not_exists(cur)
+
+        _ = cur.execute(
+            """
+            DELETE FROM tasks WHERE id = ?
+        """,
+            (id,),
+        )
+        conn.commit()
+
+    click.echo(f"Task with ID {id} has been deleted.")
