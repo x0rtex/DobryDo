@@ -1,4 +1,5 @@
 import click
+
 from .commands import task_command
 from .db import init_db
 

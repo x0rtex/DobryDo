@@ -1,5 +1,6 @@
-from datetime import datetime
 import json
+from datetime import datetime
+
 import click
 
 from dobrydo.db import get_db
@@ -36,14 +37,15 @@ def add(title: str, content: str, duedate: str, tags: tuple[str]) -> None:
         )
 
     click.echo(
-        f"Added task with title '{title}', details '{content}', and due date of '{duedate}' with tags '{tags}'."
+        f"Added task with title '{title}', details '{content}', \
+        and due date of '{duedate}' with tags '{tags}'."
     )
 
 
 @click.command()
 def list() -> None:
     """List all tasks."""
-    click.echo(f"All tasks.")
+    raise NotImplementedError
 
 
 @click.command()
