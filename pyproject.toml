@@ -15,9 +15,6 @@ dev = [
     "ty>=0.0.1a21",
 ]
 
-[tool.ruff]
-fix = true
-
 [project.scripts]
 dobrydo = "dobrydo:cli"
 
