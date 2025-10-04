@@ -12,8 +12,8 @@ on:
     paths-ignore:
       - '*.md'
 jobs:
-  uv-example:
-    name: python
+  uv-build:
+    name: UV Build
     runs-on: ubuntu-latest
 
     steps:
