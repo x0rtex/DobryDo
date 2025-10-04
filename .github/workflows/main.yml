@@ -34,3 +34,6 @@ jobs:
         uses: astral-sh/setup-uv@v6
         with:
           enable-cache: true
+
+      - name: Build project
+        run: uv build  # or whatever UV build command you have
