@@ -67,6 +67,10 @@ def complete(id: int) -> None:
             click.echo(f"Error: No task found with ID {id}")
             return
 
+        if task.is_completed:
+            click.echo(f"Error: Task {id} is already completed.")
+            return
+
         task.completed_at = datetime.now()
         task_title: str = task.title
         session.commit()
@@ -85,6 +89,7 @@ def delete(id: int) -> None:
             click.echo(f"Error: No task found with ID {id}")
             return
 
+        task_title: str = task.title
         session.delete(task)
 
-    click.echo(f"Deleted task: [{id}] {task.title}")
+    click.echo(f"Deleted task: [{id}] {task_title}")
