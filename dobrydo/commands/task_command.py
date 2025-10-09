@@ -50,7 +50,10 @@ def list_tasks() -> None:
             return
 
         for task in tasks:
-            click.echo(f"[{task.id}] {task.title}")
+            status: str = "Completed" if task.is_completed else "Incomplete"
+            if task.is_overdue:
+                status += " (Overdue)"
+            click.echo(f"[{task.id}] {status}: {task.title}")
 
 
 @click.command()
