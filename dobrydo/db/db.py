@@ -1,51 +1,40 @@
-import sqlite3
+"""Database management for DobryDo."""
+
 from contextlib import contextmanager
 from pathlib import Path
+from collections.abc import Generator
+
+from sqlalchemy import create_engine
+from sqlalchemy.orm import DeclarativeBase, Session, sessionmaker
 
 DB_PATH: Path = Path.home() / ".dobrydo" / "dobrydo.db"
 
 
+class Base(DeclarativeBase):
+    """Base class for all SQLAlchemy models."""
+
+    pass
+
+
+DB_PATH.parent.mkdir(parents=True, exist_ok=True)
+engine = create_engine(f"sqlite:///{DB_PATH}", echo=False)
+SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False)
+
+
 @contextmanager
-def get_db():
-    """Get database connection."""
-    DB_PATH.parent.mkdir(parents=True, exist_ok=True)
-    conn = sqlite3.connect(DB_PATH)
+def get_session() -> Generator[Session, None, None]:
+    """Get database session with automatic commit/rollback."""
+    session = SessionLocal()
     try:
-        yield conn
+        yield session
+        session.commit()
+    except Exception:
+        session.rollback()
+        raise
     finally:
-        conn.close()
+        session.close()
 
 
 def init_db() -> None:
-    """Initialize database and create tables if missing."""
-    create_tasks_table()
-
-
-def create_tasks_table() -> None:
-    """Create tasks table if missing."""
-    with get_db() as conn:
-        cur = conn.cursor()
-
-        _ = cur.execute(
-            """
-            CREATE TABLE IF NOT EXISTS tasks (
-                id INTEGER PRIMARY KEY,
-                title TEXT NOT NULL,
-                content TEXT,
-                due_date DATE,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                completed_at TIMESTAMP,
-                tags TEXT
-            );
-        """
-        )
-
-
-def create_notes_table() -> None:
-    """Create notes table if missing."""
-    raise NotImplementedError
-
-
-def create_timers_table() -> None:
-    """Create timers table if missing."""
-    raise NotImplementedError
+    """Initialize database and create all tables."""
+    Base.metadata.create_all(engine)
