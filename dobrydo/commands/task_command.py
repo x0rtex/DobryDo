@@ -58,6 +58,24 @@ def list_tasks() -> None:
 
 @click.command()
 @click.argument("id", type=int)
+def complete(id: int) -> None:
+    """Mark a task as completed."""
+    with get_session() as session:
+        task: Task | None = session.get(Task, id)
+
+        if not task:
+            click.echo(f"Error: No task found with ID {id}")
+            return
+
+        task.completed_at = datetime.now()
+        task_title: str = task.title
+        session.commit()
+
+    click.echo(f"Completed task: [{id}] {task_title}")
+
+
+@click.command()
+@click.argument("id", type=int)
 def delete(id: int) -> None:
     """Delete a task by ID."""
     with get_session() as session:

@@ -20,6 +20,7 @@ def task() -> None:
 
 task.add_command(task_command.add)
 task.add_command(task_command.list_tasks)
+task.add_command(task_command.complete)
 task.add_command(task_command.delete)
 cli.add_command(task)
 
