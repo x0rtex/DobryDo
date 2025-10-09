@@ -1,3 +1,5 @@
+"""DobryDo CLI Productivity Suite."""
+
 import click
 
 from .commands import task_command
@@ -17,7 +19,7 @@ def task() -> None:
 
 
 task.add_command(task_command.add)
-task.add_command(task_command.list)
+task.add_command(task_command.list_tasks)
 task.add_command(task_command.delete)
 cli.add_command(task)
 
