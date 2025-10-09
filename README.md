@@ -25,7 +25,7 @@ uv pip install -e .
 
 ## Roadmap
 
-- [ ] Task management (add, list, delete)
+- [x] Task management (add, list, delete)
 - [ ] Task completion and editing
 - [ ] Notes functionality
 - [ ] Pomodoro Timer functionality
