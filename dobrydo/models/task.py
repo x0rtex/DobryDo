@@ -22,3 +22,11 @@ class Task(Base):
     )
     completed_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
     tags: Mapped[list[str] | None] = mapped_column(JSON, nullable=True)
+
+    @property
+    def is_completed(self) -> bool:
+        return self.completed_at is not None
+
+    @property
+    def is_overdue(self) -> bool:
+        return self.due_date is not None and self.due_date < date.today()
