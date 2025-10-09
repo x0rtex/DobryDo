@@ -39,7 +39,7 @@ def add(title: str, content: str | None, duedate: date | None, tags: tuple[str])
         click.echo(f"Added task: {task.title} (ID: {task.id})")
 
 
-@click.command()
+@click.command(name="list")
 def list_tasks() -> None:
     """List all tasks."""
     with get_session() as session:
