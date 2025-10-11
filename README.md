@@ -27,7 +27,7 @@ uv pip install -e .
 
 - [x] Task management (add, view, list, delete)
 - [x] Task completion
-- [ ] Task editing
+- [x] Task editing
 - [ ] Notes functionality
 - [ ] Pomodoro Timer functionality
 - [ ] Rich text formatting
