@@ -1,7 +1,8 @@
 """Task commands for DobryDo CLI."""
 
+from calendar import c
 import click
-from datetime import datetime, date, timezone
+from datetime import datetime, date
 
 from dobrydo.db.db import get_session
 from dobrydo.models.task import Task
@@ -39,6 +40,35 @@ def add(title: str, content: str | None, duedate: date | None, tags: tuple[str])
         click.echo(f"Added task: {task.title} (ID: {task.id})")
 
 
+@click.command()
+@click.argument("id", type=int)
+@click.option("--title", "--ti", help="Task title")
+@click.option("--content", "--c", help="Task content")
+@click.option("--duedate", "--d", help="Task due date (DD/MM/YYYY)", callback=validate_due_date)
+@click.option("--tags", "--t", help="Tags related to task", multiple=True)
+def edit(
+    id: int, title: str | None, content: str | None, duedate: date | None, tags: tuple[str]
+) -> None:
+    """Edit existing task by ID."""
+    with get_session() as session:
+        task: Task | None = session.get(Task, id)
+
+        if not task:
+            click.echo(f"Task with ID {id} not found.")
+            return
+
+        if title:
+            task.title = title
+        if content:
+            task.content = content
+        if duedate:
+            task.due_date = duedate
+        if tags:
+            task.tags = list(tags)
+
+        click.echo(f"Edited task: {task.title} (ID: {task.id})")
+
+
 @click.command(name="list")
 def list_tasks() -> None:
     """List all tasks."""
@@ -73,7 +103,6 @@ def complete(id: int) -> None:
 
         task.completed_at = datetime.now()
         task_title: str = task.title
-        session.commit()
 
     click.echo(f"Completed task: [{id}] {task_title}")
 
