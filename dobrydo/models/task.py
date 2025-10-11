@@ -1,6 +1,6 @@
 """Task model for DobryDo."""
 
-from datetime import datetime, date, timezone
+from datetime import datetime, date
 
 from sqlalchemy import String, Date, DateTime, JSON
 from sqlalchemy.orm import Mapped, mapped_column
@@ -18,7 +18,7 @@ class Task(Base):
     content: Mapped[str | None] = mapped_column(String, nullable=True)
     due_date: Mapped[date | None] = mapped_column(Date, nullable=True)
     created_at: Mapped[datetime] = mapped_column(
-        DateTime, default=lambda: datetime.now(timezone.utc), nullable=False
+        DateTime, default=lambda: datetime.now(), nullable=False
     )
     completed_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
     tags: Mapped[list[str] | None] = mapped_column(JSON, nullable=True)
