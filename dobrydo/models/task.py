@@ -4,6 +4,7 @@ from datetime import datetime, date
 
 from sqlalchemy import String, Date, DateTime, JSON
 from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.util.typing import Self
 
 from dobrydo.db import Base
 
@@ -24,9 +25,9 @@ class Task(Base):
     tags: Mapped[list[str] | None] = mapped_column(JSON, nullable=True)
 
     @property
-    def is_completed(self) -> bool:
+    def is_completed(self: Self) -> bool:
         return self.completed_at is not None
 
     @property
-    def is_overdue(self) -> bool:
+    def is_overdue(self: Self) -> bool:
         return self.due_date is not None and self.due_date < date.today()
