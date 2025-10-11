@@ -1,7 +1,7 @@
 """Task commands for DobryDo CLI."""
 
 import click
-from datetime import datetime, date
+from datetime import datetime, date, timezone
 
 from dobrydo.db.db import get_session
 from dobrydo.models.task import Task
@@ -76,6 +76,41 @@ def complete(id: int) -> None:
         session.commit()
 
     click.echo(f"Completed task: [{id}] {task_title}")
+
+
+@click.command()
+@click.argument("id", type=int)
+def info(id: int) -> None:
+    """Show task information by ID."""
+    with get_session() as session:
+        task: Task | None = session.get(Task, id)
+
+        if not task:
+            click.echo(f"Error: No task found with ID {id}")
+            return
+
+        click.echo(f"Task ID: {task.id}")
+        click.echo(f"Title: {task.title}")
+
+        if task.content:
+            click.echo(f"\nContent:\n{task.content}")
+
+        click.echo(f"\nCreated: {task.created_at.strftime('%d/%m/%Y %H:%M:%S')}")
+
+        if task.due_date:
+            due_date_str: str = task.due_date.strftime("%d/%m/%Y")
+            if task.is_overdue and not task.is_completed:
+                click.echo(f"Due Date: {due_date_str} (OVERDUE)", err=True)
+            else:
+                click.echo(f"Due Date: {due_date_str}")
+
+        if task.completed_at:
+            click.echo(f"Completed: {task.completed_at.strftime('%d/%m/%Y %H:%M:%S')}")
+        else:
+            click.echo("Status: Incomplete")
+
+        if task.tags:
+            click.echo(f"Tags: {', '.join(task.tags)}")
 
 
 @click.command()
