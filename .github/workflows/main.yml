@@ -14,8 +14,8 @@ on:
     paths-ignore:
       - "*.md"
 jobs:
-  uv-build:
-    name: UV Build
+  build:
+    name: Build
     runs-on: ubuntu-latest
 
     steps:
