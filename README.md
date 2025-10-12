@@ -1,5 +1,7 @@
 # DobryDo
 
+[![Build Status](https://github.com/x0rtex/DobryDo/actions/workflows/main.yml/badge.svg?event=push&label=Build)](https://github.com/x0rtex/DobryDo/actions)
+
 A productivity suite CLI tool built in Python to help you be productive from your terminal.
 
 ## Features
