@@ -32,6 +32,9 @@ uv pip install -e .
 - [x] Task management (add, view, list, delete)
 - [x] Task editing and completion
 - [ ] Task dependencies
+- [ ] Notes functionality
+- [ ] Pomodoro Timer functionality
+- [ ] Rich text formatting
 - [ ] Export tasks to file
 - [ ] Note management (add, view, list, delete)
 - [ ] Pomodoro Timers
