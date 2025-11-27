@@ -1,8 +1,8 @@
 """Task commands for DobryDo CLI."""
 
-from calendar import c
+from datetime import date, datetime
+
 import click
-from datetime import datetime, date
 
 from dobrydo.db.db import get_session
 from dobrydo.models.task import Task
