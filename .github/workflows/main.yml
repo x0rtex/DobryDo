@@ -1,19 +1,21 @@
-name: UV
+name: Build
 
 on:
   push:
     branches:
       - main
+      - dev
     paths-ignore:
       - "*.md"
   pull_request:
     branches:
       - main
+      - dev
     paths-ignore:
       - "*.md"
 jobs:
-  uv-build:
-    name: UV Build
+  build:
+    name: Build
     runs-on: ubuntu-latest
 
     steps:
